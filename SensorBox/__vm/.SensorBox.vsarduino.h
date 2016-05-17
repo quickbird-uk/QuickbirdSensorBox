@@ -85,4 +85,7 @@ extern "C" void __cxa_pure_virtual() {;}
 //
 
 #include <SensorBox.ino>
+#include <DataStore.h>
+#include <Network.h>
+#include <Variables.h>
 #endif
