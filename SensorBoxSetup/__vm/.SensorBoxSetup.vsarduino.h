@@ -81,8 +81,12 @@ extern "C" void __cxa_pure_virtual() {;}
 #define portInputRegister(P)
 #define portModeRegister(P)
 
+void printSerial();
+void printMacAddress();
+unsigned long hex2int(char *a, unsigned int len);
 //
 //
+byte hex_ascii_to_databyte(char c1);
 
-#include <SensorBox.ino>
+#include <SensorBoxSetup.ino>
 #endif
