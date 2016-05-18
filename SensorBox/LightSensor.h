@@ -13,7 +13,7 @@
 #include <math.h> 
 
 
-class SensorCommandsClass
+class LightSensorClass
 {
  private:
 	
@@ -45,9 +45,6 @@ class SensorCommandsClass
  public:
 
 	 
-
-
-
 	 uint16_t getLight()
 	 {
 		 BH1750_Init(BH1750address);
@@ -64,7 +61,7 @@ class SensorCommandsClass
 	
 };
 
-static SensorCommandsClass SensorCommands;
+static LightSensorClass LightSensor;
 
 #endif
 

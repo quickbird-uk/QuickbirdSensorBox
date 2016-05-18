@@ -11,7 +11,8 @@
 
 #include "DataStore.h"
 #include "Ethernet2.h"
-#include "SensorCommands.h"
+#include "LightSensor.h"
+#include "SensorDS18B20.h"
 
 #define nRST  11  //Reset Pin
 #define sdCardPin  4  //Self-explanotary
@@ -131,8 +132,9 @@ class NetworkClass
 
 				}
 				EthClient.connect(remote, port);
-				uint16_t light =  SensorCommands.getLight(); 
+				uint16_t light =  LightSensor.getLight(); 
 				EthClient.print(light); 
+				EthClient.print(SensorDS18B20.GetReading());
 				Serial.println("Contents:");
 				Serial.println(buffer);
 			}

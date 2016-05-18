@@ -21,6 +21,7 @@ by Tom Igoe
 #include "Variables.h"
 #include "Network.h"
 #include <Wire.h>
+#include <OneWire.h>
 
 #define nRST 11 //reset pin for network
 

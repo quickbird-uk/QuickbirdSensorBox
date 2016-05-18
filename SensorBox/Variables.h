@@ -14,7 +14,6 @@ const byte numberOfSamples = 20;
 const uint32_t networkFrequencyus = 1000000;
 const uint32_t collectionFrequency = networkFrequencyus / numberOfSamples;
 
-
 struct SerialNumber
 {
 	public: uint32_t part1;

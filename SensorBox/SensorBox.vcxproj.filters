@@ -33,7 +33,10 @@
     <ClInclude Include="Network.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SensorCommands.h">
+    <ClInclude Include="LightSensor.h">
+      <Filter>Sensors</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorDS18B20.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
