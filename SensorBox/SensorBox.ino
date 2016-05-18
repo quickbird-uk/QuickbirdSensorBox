@@ -14,7 +14,7 @@ by Tom Igoe
 
 */
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #define DEBUG_PRINT(x)     Serial.print (x)
@@ -35,20 +35,26 @@ by Tom Igoe
 #include <Wire.h>
 #include <OneWire.h>
 #include <SHT1x.h>
+#include "SensorWaterFlow_EGO_A_75Q.h"
+#include "LightSensor.h"
 #include "PubSubClient\PubSubClient.h"
 
 
-#define nRST 11 //reset pin for network
+uint32_t lastNetowrkSend;
+uint32_t lastAnalogueReading; 
 
-// Initialize the Ethernet client library
-// with the IP address and port of the server
-// that you want to connect to (port 80 is default for HTTP):
-EthernetClient client;
+// Sensors: 
+SHT1x sht1x(8, 9);
+SensorWaterFlow_EGO_A_75Q* waterSensor; 
+
+const byte numberOfReadings = 7; 
+Reading readings[numberOfReadings];
 
 void setup() {
 	// Open serial communications and wait for port to open:
-	Serial.begin(9600);
+	Serial.begin(115200);
 	Wire.begin(); 
+
 #ifdef DEBUG
 	// this check is only needed on the Leonardo:
 	while (!Serial) {
@@ -59,10 +65,44 @@ void setup() {
 	Serial.print("Boot number: ");
 	Serial.println(DataStore.getRestarts()); 
 #endif
+
+
+	waterSensor = &SensorWaterFlow_EGO_A_75Q::init(3);
 	Network.init(DataStore.getMacAddress());
 }
 
 void loop() {
 	Network.Maintain();
+
+	if (micros() - lastAnalogueReading > AnalogueSampleT)
+	{
+		lastAnalogueReading = micros();
+		//collect analogue readings
+	}
+	if (micros() - lastNetowrkSend > networkTus)
+	{
+		lastNetowrkSend = micros();
+
+		//Take readings
+		readings[0].value = sht1x.readHumidity();
+		readings[0].duration = 0;
+		readings[0].SensorTypeID = 5; 
+		readings[1].value = sht1x.readTemperatureC();
+		readings[1].duration = 0;
+		readings[1].SensorTypeID = 6;
+		readings[2] = LightSensor.getLight(); 
+		readings[3] = waterSensor->GetReading(); 
+
+		//Send data 
+		if (Network.SendData(readings, numberOfReadings))
+		{
+			//something
+		}
+		else
+		{
+			//something else?
+		}
+	}
+
 }
 

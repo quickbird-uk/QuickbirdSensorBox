@@ -92,5 +92,6 @@ extern "C" void __cxa_pure_virtual() {;}
 #include <PubSubClient\PubSubClient.cpp>
 #include <PubSubClient\PubSubClient.h>
 #include <SensorDS18B20.h>
+#include <SensorWaterFlow_EGO_A_75Q.h>
 #include <Variables.h>
 #endif

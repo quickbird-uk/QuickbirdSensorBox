@@ -11,6 +11,7 @@
 
 #include <Wire.h>
 #include <math.h> 
+#include "Variables.h"
 
 
 class LightSensorClass
@@ -45,15 +46,20 @@ class LightSensorClass
  public:
 
 	 
-	 uint16_t getLight()
+	 Reading getLight()
 	 {
+		 Reading result; 
+		 result.duration = 0;
+		 result.SensorTypeID = 11; 
+		 result.value = -2000000; 
+
 		 BH1750_Init(BH1750address);
 		 if (2 == BH1750_Read(BH1750address))
 		 {
 			 uint16_t val = ((buff[0] << 8) | buff[1]) / 1.2;
-			 return val; 
-
+			 result.value = val;
 		 }
+		 return result; 
 	 }
 	 
 

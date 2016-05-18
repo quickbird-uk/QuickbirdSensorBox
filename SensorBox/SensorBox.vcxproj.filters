@@ -48,6 +48,9 @@
     <ClInclude Include="PubSubClient\PubSubClient.h">
       <Filter>PubSub</Filter>
     </ClInclude>
+    <ClInclude Include="SensorWaterFlow_EGO_A_75Q.h">
+      <Filter>Sensors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PubSubClient\PubSubClient.cpp">

@@ -11,25 +11,23 @@
 
 #include "DataStore.h"
 #include "Ethernet2.h"
-#include "LightSensor.h"
-#include "SensorDS18B20.h"
+#include "Variables.h"
 #include "PubSubClient\PubSubClient.h"
 
 
 #define nRST  11  //Reset Pin
 #define sdCardPin  4  //Self-explanotary
-#include <SHT1x.h>
 
-SHT1x sht1x(12, 13);
+
+
 
 
 class NetworkClass
 {
  protected:
 	 // Update these with values suitable for your network.
-	 EthernetClient ethClient;
 	 const uint16_t port = 1337;
-	 const uint8_t serverIP[4] = { 192, 168, 1, 53};	 
+	 uint8_t serverIP[4] = { 192, 168, 1, 53};	 
 	 static const byte rBufferLength = 100; 
 	 char recieveBuffer[rBufferLength];
 	 byte rBufferIndex = 0; 
@@ -53,18 +51,18 @@ class NetworkClass
 
 		// start the Ethernet connection:
 		if (Ethernet.begin(mac) == 0) {
-			Serial.println("Failed to configure Ethernet using DHCP");
+			DEBUG_PRINTLN("Failed to configure Ethernet using DHCP");
 
 			return false; 
 		}
 		// print your local IP address:
-		Serial.print("My IP address: ");
+		DEBUG_PRINT("My IP address: ");
 		for (byte thisByte = 0; thisByte < 4; thisByte++) {
 			// print the value of each byte of the IP address:
-			Serial.print(Ethernet.localIP()[thisByte], DEC);
-			Serial.print(".");
+			DEBUG_PRINTDEC(Ethernet.localIP()[thisByte]);
+			DEBUG_PRINT(".");
 		}
-		Serial.println();
+		DEBUG_PRINTLN();
 
 
 		//Absolutely essential when using netowrk and relays together,
@@ -78,15 +76,15 @@ class NetworkClass
 
 	
 
-	//If not connected, will tyr to connect. Reports on success
+	//If not connected, will try to connect. Reports on success
 	boolean _ConnectionWorks()
 	{
-		boolean status = ethClient.connected();
+		boolean status = EthClient.connected();
 
 		if (!status)
 		{
-			ethClient.stop(); 
-			status = ethClient.connect(serverIP, port);
+			EthClient.stop(); 
+			status = EthClient.connect(serverIP, port);
 
 			if (status)
 			{
@@ -99,6 +97,18 @@ class NetworkClass
 			//lastConnectedTime = now();
 		}
 		return status;
+	}
+
+	boolean SendData(Reading* readings, const byte number)
+	{
+		if (EthClient.connected())
+		{
+			EthClient.println(readings[1].value); 
+			//const int buffersize = Reading::size * number; 
+			//byte[buffersize] buffer;
+
+		}
+
 	}
 
 	//void TimeRequest()
@@ -123,7 +133,7 @@ class NetworkClass
 		if (packetSize == 6)
 		{
 			IPAddress remote = UDPsocket.remoteIP();
-			Serial.println("PacketCame");
+			DEBUG_PRINTLN("PacketCame");
 
 
 			char buffer[6];
@@ -135,14 +145,18 @@ class NetworkClass
 					EthClient.stop();
 
 				}
-				EthClient.connect(remote, port);
-				uint16_t light =  LightSensor.getLight(); 
-				EthClient.println(light); 
-				EthClient.println(SensorDS18B20.GetReading());
-				EthClient.println(sht1x.readTemperatureC());
-				EthClient.println(sht1x.readHumidity());
-				Serial.println("Contents:");
-				Serial.println(buffer);
+				if (EthClient.connect(remote, port) == 1)
+				{
+					EthClient.println("Hello! ");
+					serverIP[0] = remote[0]; 
+					serverIP[1] = remote[1];
+					serverIP[2] = remote[2];
+					serverIP[3] = remote[3];
+
+					DEBUG_PRINTLN("Contents:");
+					DEBUG_PRINTLN(buffer);
+				}
+
 				//PubSubClient client(EthClient);
 				//client.connect("Bafoon"); 
 				//client.publish("soasdasdasdasd", "asdadasdasdasda");
@@ -150,8 +164,8 @@ class NetworkClass
 			else {
 
 				//we recieved soem strange packet
-				Serial.println("size is :");
-				Serial.println(packetSize);
+				DEBUG_PRINTLN("size is :");
+				DEBUG_PRINTLN(packetSize);
 			}
 		}
 		

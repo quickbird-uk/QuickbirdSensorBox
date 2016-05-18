@@ -9,10 +9,9 @@
 #include "WProgram.h"
 #endif
 
-const byte numberOfRelays = 4;
 const byte numberOfSamples = 20;
-const uint32_t networkFrequencyus = 1000000;
-const uint32_t collectionFrequency = networkFrequencyus / numberOfSamples;
+const uint32_t networkTus = 1000000;
+const uint32_t AnalogueSampleT = networkTus / numberOfSamples;
 
 struct SerialNumber
 {
@@ -20,6 +19,17 @@ struct SerialNumber
 	public: uint32_t part2;
 	public: uint32_t part3;
 	public: uint32_t part4;
+};
+
+struct Reading
+{
+	float value;
+	//in microseconds
+	int32_t duration;
+	//Defined in the database
+	byte SensorTypeID;
+
+	static const int size = 9; 
 };
 
 
