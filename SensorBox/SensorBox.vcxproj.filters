@@ -19,6 +19,9 @@
     <Filter Include="PubSub">
       <UniqueIdentifier>{4672817b-b3ca-486c-9cb3-9775e4477cb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="I2C">
+      <UniqueIdentifier>{80e58fa3-909c-4130-a3b5-1d308e0945f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SensorBox.ino" />
@@ -42,19 +45,22 @@
     <ClInclude Include="SensorDS18B20.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HumidSensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PubSubClient\PubSubClient.h">
       <Filter>PubSub</Filter>
     </ClInclude>
     <ClInclude Include="SensorWaterFlow_EGO_A_75Q.h">
       <Filter>Sensors</Filter>
     </ClInclude>
+    <ClInclude Include="I2C\I2C.h">
+      <Filter>I2C</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PubSubClient\PubSubClient.cpp">
       <Filter>PubSub</Filter>
+    </ClCompile>
+    <ClCompile Include="I2C\I2C.cpp">
+      <Filter>I2C</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

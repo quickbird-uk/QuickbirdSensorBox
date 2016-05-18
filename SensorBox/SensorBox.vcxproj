@@ -119,7 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataStore.h" />
-    <ClInclude Include="HumidSensor.h" />
+    <ClInclude Include="I2C\I2C.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="LightSensor.h" />
     <ClInclude Include="PubSubClient\PubSubClient.h" />
@@ -129,6 +129,7 @@
     <ClInclude Include="__vm\.SensorBox.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="I2C\I2C.cpp" />
     <ClCompile Include="PubSubClient\PubSubClient.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
