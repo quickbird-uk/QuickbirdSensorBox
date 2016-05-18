@@ -11,6 +11,7 @@
 
 #include "DataStore.h"
 #include "Ethernet2.h"
+#include "SensorCommands.h"
 
 //PIns for the ETH. Shield
 #define SS    10   //Chip Select Pin
@@ -134,7 +135,8 @@ class NetworkClass
 
 				}
 				EthClient.connect(remote, port);
-				EthClient.write("here!");
+				uint16_t light =  SensorCommands.getLight(); 
+				EthClient.print(light); 
 				Serial.println("Contents:");
 				Serial.println(buffer);
 			}

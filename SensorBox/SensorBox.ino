@@ -20,6 +20,7 @@ by Tom Igoe
 #include "DataStore.h"
 #include "Variables.h"
 #include "Network.h"
+#include <Wire.h>
 
 #define nRST 11 //reset pin for network
 
@@ -31,7 +32,7 @@ EthernetClient client;
 void setup() {
 	// Open serial communications and wait for port to open:
 	Serial.begin(9600);
-
+	Wire.begin(); 
 
 	pinMode(nRST, OUTPUT);
 	digitalWrite(nRST, LOW);  //Reset W5200
@@ -50,6 +51,6 @@ void setup() {
 }
 
 void loop() {
-	Network.Maintain(); 
+	Network.Maintain();
 }
 
