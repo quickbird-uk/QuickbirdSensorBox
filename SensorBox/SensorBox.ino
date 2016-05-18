@@ -39,14 +39,20 @@ by Tom Igoe
 #include "LightSensor.h"
 #include "PubSubClient\PubSubClient.h"
 #include <Wire.h>
+#include "SensorDS18B20.h"
+#include "SensorPhMeter.h"
+#include "SensorEC_OpenGarden.h"
 
 
 uint32_t lastNetowrkSend = 0;
 uint32_t lastAnalogueReading = 0; 
 
 // Sensors: 
+const byte floatSwitchPin = 0; 
 SHT1x sht1x(8, 9);
 SensorWaterFlow_EGO_A_75Q* waterSensor; 
+SensorPH sensorPh(A0, A2); 
+SensorEC_DFR0300 sensorEC(A1, A3);
 
 const byte numberOfReadings = 7; 
 Reading readings[numberOfReadings];
@@ -68,7 +74,7 @@ void setup() {
 	Serial.println(DataStore.getRestarts()); 
 #endif
 
-
+	pinMode(floatSwitchPin, INPUT_PULLUP);
 	waterSensor = &SensorWaterFlow_EGO_A_75Q::init(3);
 	Network.init(DataStore.getMacAddress());
 }
@@ -80,6 +86,8 @@ void loop() {
 	{
 		lastAnalogueReading = micros();
 		//collect analogue readings
+		sensorPh.TakeSample(); 
+		sensorEC.TakeSample(); 
 	}
 	if (micros() - lastNetowrkSend > networkTus)
 	{
@@ -94,14 +102,22 @@ void loop() {
 		readings[1].value = sht1x.readTemperatureC();
 		readings[1].duration = 0;
 		readings[1].SensorTypeID = 6;
+		readings[2] = waterSensor->GetReading(); 
+		readings[3].duration = 0; 
+		readings[3].SensorTypeID = 19 ;
+		readings[3].value = digitalRead(floatSwitchPin); 
+		readings[4] = SensorDS18B20.GetReading(); 
+		readings[5] = sensorPh.GetReading(); 
+		readings[6] = sensorEC.GetReading(readings[4].value); //giving it current temp
 
-		DEBUG_PRINTLN("Light is");
-		readings[2] = LightSensor.getLight(); 		
-		DEBUG_PRINTLN(readings[2].value);
-		readings[3] = waterSensor->GetReading(); 
 
 		DEBUG_PRINTLN("time to sample:");
 		DEBUG_PRINTLN(micros() - time);
+
+		for (int i = 0; i < numberOfReadings; i++)
+		{
+			DEBUG_PRINTLN(readings[i].value);
+		}
 
 		//Send data 
 		if (Network.SendData(readings, numberOfReadings))

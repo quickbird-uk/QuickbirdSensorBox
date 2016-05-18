@@ -124,6 +124,8 @@
     <ClInclude Include="LightSensor.h" />
     <ClInclude Include="PubSubClient\PubSubClient.h" />
     <ClInclude Include="SensorDS18B20.h" />
+    <ClInclude Include="SensorEC_OpenGarden.h" />
+    <ClInclude Include="SensorPhMeter.h" />
     <ClInclude Include="SensorWaterFlow_EGO_A_75Q.h" />
     <ClInclude Include="Variables.h" />
     <ClInclude Include="__vm\.SensorBox.vsarduino.h" />

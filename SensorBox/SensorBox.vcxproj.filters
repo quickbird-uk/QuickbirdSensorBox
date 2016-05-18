@@ -30,20 +30,8 @@
     <ClInclude Include="__vm\.SensorBox.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DataStore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Variables.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Network.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LightSensor.h">
       <Filter>Sensors</Filter>
-    </ClInclude>
-    <ClInclude Include="SensorDS18B20.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PubSubClient\PubSubClient.h">
       <Filter>PubSub</Filter>
@@ -53,6 +41,18 @@
     </ClInclude>
     <ClInclude Include="I2C\I2C.h">
       <Filter>I2C</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorPhMeter.h">
+      <Filter>Sensors</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorDS18B20.h">
+      <Filter>Sensors</Filter>
+    </ClInclude>
+    <ClInclude Include="Variables.h" />
+    <ClInclude Include="DataStore.h" />
+    <ClInclude Include="Network.h" />
+    <ClInclude Include="SensorEC_OpenGarden.h">
+      <Filter>Sensors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

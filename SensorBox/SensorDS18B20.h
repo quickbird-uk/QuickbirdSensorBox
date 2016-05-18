@@ -10,6 +10,7 @@
 #endif
 
 #include <OneWire.h>
+#include "Variables.h"
 
 class SensorDS18B20Class 
 {
@@ -160,9 +161,13 @@ class SensorDS18B20Class
 	 }
 
 
-	 /*Reaturns a reading as voltage*/
-	 float GetReading()
+	 /*Reaturns a reading*/
+	 Reading GetReading()
 	 {
+		 Reading reading;
+		 reading.duration = 0;
+		 reading.SensorTypeID = 8;
+		 
 		 unsigned long difference = micros() - prevReadingTime; 
 		 if(difference > collectionPeriod)
 		 {
@@ -174,7 +179,8 @@ class SensorDS18B20Class
 			 prevReadingTime = micros();  
 		 }
 
-		 return previousReading; 
+		 reading.value = previousReading; 
+		 return reading; 
 	 }
 	
 };
