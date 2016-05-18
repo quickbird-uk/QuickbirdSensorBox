@@ -33,15 +33,16 @@ by Tom Igoe
 #include "Variables.h"
 #include "Network.h"
 #include <OneWire.h>
-#include "I2C\I2C.h" //https://rheingoldheavy.com/changing-the-i2c-library/
+
 #include <SHT1x.h>
 #include "SensorWaterFlow_EGO_A_75Q.h"
-#include "LightSensor.h"
+
 #include "PubSubClient\PubSubClient.h"
-#include <Wire.h>
+
 #include "SensorDS18B20.h"
 #include "SensorPhMeter.h"
 #include "SensorEC_OpenGarden.h"
+#include "SensorLightAnalog.h"
 
 
 uint32_t lastNetowrkSend = 0;
@@ -53,15 +54,15 @@ SHT1x sht1x(8, 9);
 SensorWaterFlow_EGO_A_75Q* waterSensor; 
 SensorPH sensorPh(A0, A2); 
 SensorEC_DFR0300 sensorEC(A1, A3, A2);
+SensorLightAnalog lightSensor(A5); 
 
-const byte numberOfReadings = 7; 
+const byte numberOfReadings = 8; 
 Reading readings[numberOfReadings];
 
 void setup() {
 	// Open serial communications and wait for port to open:
 	Serial.begin(115200);
-	Wire.begin(); 
-	Wire.setTimeout(500); 
+	
 
 #ifdef DEBUG
 	// this check is only needed on the Leonardo:
@@ -88,6 +89,7 @@ void loop() {
 		//collect analogue readings
 		sensorPh.TakeSample(); 
 		sensorEC.TakeSample(); 
+		lightSensor.TakeSample(); 
 	}
 	if (micros() - lastNetowrkSend > networkTus)
 	{
@@ -109,7 +111,7 @@ void loop() {
 		readings[4] = SensorDS18B20.GetReading(); 
 		readings[5] = sensorPh.GetReading(); 
 		readings[6] = sensorEC.GetReading(readings[4].value); //giving it current temp
-
+		readings[7] = lightSensor.GetReading();
 
 		DEBUG_PRINTLN("time to sample:");
 		DEBUG_PRINTLN(micros() - time);

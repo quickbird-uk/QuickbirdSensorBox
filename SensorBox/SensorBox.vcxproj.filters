@@ -54,6 +54,9 @@
     <ClInclude Include="SensorEC_OpenGarden.h">
       <Filter>Sensors</Filter>
     </ClInclude>
+    <ClInclude Include="SensorLightAnalog.h">
+      <Filter>Sensors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PubSubClient\PubSubClient.cpp">
