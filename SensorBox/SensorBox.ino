@@ -14,6 +14,18 @@ by Tom Igoe
 
 */
 
+#define DEBUG
+
+#ifdef DEBUG
+#define DEBUG_PRINT(x)     Serial.print (x)
+#define DEBUG_PRINTDEC(x)     Serial.print (x, DEC)
+#define DEBUG_PRINTLN(x)  Serial.println (x)
+#else
+#define DEBUG_PRINT(x)
+#define DEBUG_PRINTDEC(x)
+#define DEBUG_PRINTLN(x) 
+#endif
+
 #include <SPI.h>
 #include <Ethernet2.h>
 #include <eeprom.h>
@@ -22,6 +34,9 @@ by Tom Igoe
 #include "Network.h"
 #include <Wire.h>
 #include <OneWire.h>
+#include <SHT1x.h>
+#include "PubSubClient\PubSubClient.h"
+
 
 #define nRST 11 //reset pin for network
 
@@ -34,15 +49,16 @@ void setup() {
 	// Open serial communications and wait for port to open:
 	Serial.begin(9600);
 	Wire.begin(); 
-
+#ifdef DEBUG
 	// this check is only needed on the Leonardo:
 	while (!Serial) {
 		; // wait for serial port to connect. Needed for Leonardo only
 	}
 
+
 	Serial.print("Boot number: ");
 	Serial.println(DataStore.getRestarts()); 
-
+#endif
 	Network.init(DataStore.getMacAddress());
 }
 

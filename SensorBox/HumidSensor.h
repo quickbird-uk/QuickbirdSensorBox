@@ -9,23 +9,24 @@
 	#include "WProgram.h"
 #endif
 
-#include <OneWire.h>
+#include <SHT1x.h>
 
 
 class HumiditySensorClass
 {
  private:
-	 OneWire myds(6);
-	 byte readstage;
-	 const byte resolution = 10;
-	 unsigned long starttime;
-	 unsigned long elapsedtime;
-	 byte dsaddr[8];
+	#define dataPin  12
+	#define clockPin 13
+	 SHT1x sht1x(dataPin, clockPin);
+
 
 
  public:
 
-	
+	 float getTemperature()
+	 {
+		 return sht1x.readTemperatureC();
+	 }
 	 
 
 	

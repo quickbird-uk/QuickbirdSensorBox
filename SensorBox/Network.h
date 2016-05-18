@@ -13,10 +13,14 @@
 #include "Ethernet2.h"
 #include "LightSensor.h"
 #include "SensorDS18B20.h"
+#include "PubSubClient\PubSubClient.h"
+
 
 #define nRST  11  //Reset Pin
 #define sdCardPin  4  //Self-explanotary
+#include <SHT1x.h>
 
+SHT1x sht1x(12, 13);
 
 
 class NetworkClass
@@ -133,10 +137,15 @@ class NetworkClass
 				}
 				EthClient.connect(remote, port);
 				uint16_t light =  LightSensor.getLight(); 
-				EthClient.print(light); 
-				EthClient.print(SensorDS18B20.GetReading());
+				EthClient.println(light); 
+				EthClient.println(SensorDS18B20.GetReading());
+				EthClient.println(sht1x.readTemperatureC());
+				EthClient.println(sht1x.readHumidity());
 				Serial.println("Contents:");
 				Serial.println(buffer);
+				PubSubClient client(EthClient);
+				client.connect("Bafoon"); 
+				client.publish("soasdasdasdasd", "asdadasdasdasda");
 			}
 			else {
 

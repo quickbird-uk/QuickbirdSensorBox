@@ -16,6 +16,9 @@
     <Filter Include="Sensors">
       <UniqueIdentifier>{47bb31f3-b787-4d4e-b4a9-8a62b98cebce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PubSub">
+      <UniqueIdentifier>{4672817b-b3ca-486c-9cb3-9775e4477cb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SensorBox.ino" />
@@ -39,5 +42,16 @@
     <ClInclude Include="SensorDS18B20.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HumidSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PubSubClient\PubSubClient.h">
+      <Filter>PubSub</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PubSubClient\PubSubClient.cpp">
+      <Filter>PubSub</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
