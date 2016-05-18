@@ -31,6 +31,7 @@ class NetworkClass
 	 byte rBufferIndex = 0; 
 	 boolean overflow = false; 
 	 EthernetUDP UDPsocket; 
+	 EthernetClient EthClient; 
 	 const uint16_t UDPPort = 44000;
 
 
@@ -115,102 +116,38 @@ class NetworkClass
 	
 	void Maintain()
 	{
-		Ethernet.maintain(); 
+		Ethernet.maintain();
 		int packetSize = UDPsocket.parsePacket();
-		if (packetSize)
+		if (packetSize == 6)
 		{
-			Serial.print("Received packet of size ");
-			Serial.println(packetSize);
-			Serial.print("From ");
 			IPAddress remote = UDPsocket.remoteIP();
-			for (int i = 0; i < 4; i++)
+			Serial.println("PacketCame");
+
+
+			char buffer[6];
+			UDPsocket.read(buffer, 6);
+			if (buffer[0] == 's' && buffer[3] == 'r') //sekret
 			{
-				Serial.print(remote[i], DEC);
-				if (i < 3)
+				if (EthClient.connected())
 				{
-					Serial.print(".");
+					EthClient.stop();
+
 				}
+				EthClient.connect(remote, port);
+				EthClient.write("here!");
+				Serial.println("Contents:");
+				Serial.println(buffer);
 			}
-			Serial.print(", port ");
-			Serial.println(UDPsocket.remotePort());
+			else {
 
-			// read the packet into packetBufffer
-			UDPsocket.read( recieveBuffer,  rBufferLength);
-			Serial.println("Contents:");
-			Serial.println( recieveBuffer);
+				//we recieved soem strange packet
+				Serial.println("size is :");
+				Serial.println(packetSize);
+			}
 		}
-
-		//while(ethClient.available() > 0)
-		//{
-		//	unsigned char byte = ethClient.read(); 
-
-		//	
-
-		//	//Serial.print(byte);
-		//	//Serial.print(" ");
-
-		//	if (byte == readStopChar)
-		//		rSepCharsDetected++;
-		//	else
-		//	{
-		//		recieveBuffer[rBufferIndex] = byte;
-		//		rSepCharsDetected = 0;
-		//		rBufferIndex = (rBufferIndex + 1) % rBufferLength;
-
-		//		//Manage an error condition
-		//		overflow = rBufferIndex == 0;
-		//	}
-
-
-		//	
-		//	if(rSepCharsDetected == numberOfStopChars)
-		//	{		
-		//		if(! overflow)
-		//		{
-		//			//-1 because we increment at the endo f the operation, regardless of the next bit
-		//			unsigned int length = rBufferIndex - 1; 
-		//			if(recieveBuffer[0] == length)
-		//			{
-		//				//do stuff;
-		//				uint8_t* payload = recieveBuffer + 2;
-
-		//				//Which type of message is it
-		//				if(recieveBuffer[1] == 0)
-		//				{
-		//					SetTime(payload, length-1); //length is -1 becuase we do not count messagetype byte
-		//				}
-		//				else if(recieveBuffer[1] == 1)
-		//				{
-		//					SetRelays(payload, length-1);
-		//				}
-		//				else
-		//				{
-		//					Serial.println("unknown message");
-		//				}
-		//			}
-		//			else
-		//			{
-
-		//				Serial.println("bufferlength not equal to length-delimeter");
-
-		//				//there was an error or dropped byte						
-		//			}
-		//		}
-		//		else
-		//		{
-		//			Serial.println("frame skipepd because of overflow");
-		//		}
-		//		rBufferIndex = 0;
-		//		overflow = false; 
-		//	}
-		//}
 		
 	}
 
-	boolean Connected()
-	{
-		return ethClient.connected(); 
-	}
 
 };
 
