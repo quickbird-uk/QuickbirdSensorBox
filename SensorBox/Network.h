@@ -143,9 +143,9 @@ class NetworkClass
 				EthClient.println(sht1x.readHumidity());
 				Serial.println("Contents:");
 				Serial.println(buffer);
-				PubSubClient client(EthClient);
-				client.connect("Bafoon"); 
-				client.publish("soasdasdasdasd", "asdadasdasdasda");
+				//PubSubClient client(EthClient);
+				//client.connect("Bafoon"); 
+				//client.publish("soasdasdasdasd", "asdadasdasdasda");
 			}
 			else {
 
