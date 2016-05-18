@@ -34,11 +34,6 @@ void setup() {
 	Serial.begin(9600);
 	Wire.begin(); 
 
-	pinMode(nRST, OUTPUT);
-	digitalWrite(nRST, LOW);  //Reset W5200
-	delay(10);
-	digitalWrite(nRST, HIGH);
-
 	// this check is only needed on the Leonardo:
 	while (!Serial) {
 		; // wait for serial port to connect. Needed for Leonardo only

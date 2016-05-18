@@ -13,9 +13,7 @@
 #include "Ethernet2.h"
 #include "SensorCommands.h"
 
-//PIns for the ETH. Shield
-#define SS    10   //Chip Select Pin
-#define nRST  8  //Reset Pin
+#define nRST  11  //Reset Pin
 #define sdCardPin  4  //Self-explanotary
 
 
@@ -42,8 +40,6 @@ class NetworkClass
 
 	bool init(uint8_t* mac)
 	{
-
-		pinMode(SS, OUTPUT);  
 		pinMode(nRST, OUTPUT);
 		digitalWrite(nRST, LOW);  //Reset W5200
 		delay(10);
