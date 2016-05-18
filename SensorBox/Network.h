@@ -140,11 +140,9 @@ class NetworkClass
 			UDPsocket.read(buffer, 6);
 			if (buffer[0] == 's' && buffer[3] == 'r') //sekret
 			{
-				if (EthClient.connected())
-				{
-					EthClient.stop();
 
-				}
+				EthClient.stop();
+
 				if (EthClient.connect(remote, port) == 1)
 				{
 					EthClient.println("Hello! ");

@@ -14,7 +14,7 @@ by Tom Igoe
 
 */
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #define DEBUG_PRINT(x)     Serial.print (x)
@@ -52,7 +52,7 @@ const byte floatSwitchPin = 0;
 SHT1x sht1x(8, 9);
 SensorWaterFlow_EGO_A_75Q* waterSensor; 
 SensorPH sensorPh(A0, A2); 
-SensorEC_DFR0300 sensorEC(A1, A3);
+SensorEC_DFR0300 sensorEC(A1, A3, A2);
 
 const byte numberOfReadings = 7; 
 Reading readings[numberOfReadings];

@@ -9,7 +9,7 @@
 #include "WProgram.h"
 #endif
 
-const byte numberOfSamples = 20;
+const byte numberOfSamples = 7;
 const uint32_t networkTus = 1000000;
 const uint32_t AnalogueSampleT = networkTus / numberOfSamples;
 
