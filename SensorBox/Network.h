@@ -27,7 +27,7 @@ class NetworkClass
  protected:
 	 // Update these with values suitable for your network.
 	 const uint16_t port = 1337;
-	 uint8_t serverIP[4] = { 192, 168, 1, 53};	 
+	 IPAddress serverIP;
 	 static const byte rBufferLength = 100; 
 	 char recieveBuffer[rBufferLength];
 	 byte rBufferIndex = 0; 
@@ -35,6 +35,7 @@ class NetworkClass
 	 EthernetUDP UDPsocket; 
 	 EthernetClient EthClient; 
 	 const uint16_t UDPPort = 44000;
+	 bool gotAddress = false; 
 
 
 
@@ -49,12 +50,21 @@ class NetworkClass
 		digitalWrite(nRST, HIGH);
 		delay(200);       // wait for w5500 work
 
+		serverIP = DataStore.getServerIP(); 
+		DEBUG_PRINTLN("ServerIP:");
+		DEBUG_PRINT(serverIP[0]);
+		DEBUG_PRINT(serverIP[1]);
+		DEBUG_PRINT(serverIP[2]);
+		DEBUG_PRINTLN(serverIP[3]);
+
 		// start the Ethernet connection:
 		if (Ethernet.begin(mac) == 0) {
 			DEBUG_PRINTLN("Failed to configure Ethernet using DHCP");
 
 			return false; 
 		}
+		gotAddress = true;
+
 		// print your local IP address:
 		DEBUG_PRINT("My IP address: ");
 		for (byte thisByte = 0; thisByte < 4; thisByte++) {
@@ -101,7 +111,7 @@ class NetworkClass
 
 	boolean SendData(Reading* readings, const byte number)
 	{
-		if (EthClient.connected())
+		if (_ConnectionWorks())
 		{
 			EthClient.println(readings[1].value); 
 			//const int buffersize = Reading::size * number; 
@@ -140,19 +150,31 @@ class NetworkClass
 			UDPsocket.read(buffer, 6);
 			if (buffer[0] == 's' && buffer[3] == 'r') //sekret
 			{
+				DEBUG_PRINTLN("Sekret");
 
-				EthClient.stop();
-
-				if (EthClient.connect(remote, port) == 1)
+				if (serverIP[0] != remote[0] ||
+					serverIP[1] != remote[1] ||
+					serverIP[2] != remote[2] ||
+					serverIP[3] != remote[3])
 				{
-					EthClient.println("Hello! ");
-					serverIP[0] = remote[0]; 
-					serverIP[1] = remote[1];
-					serverIP[2] = remote[2];
-					serverIP[3] = remote[3];
+					DEBUG_PRINTLN("IP is different");
+					EthClient.stop();
 
-					DEBUG_PRINTLN("Contents:");
-					DEBUG_PRINTLN(buffer);
+					if (EthClient.connect(remote, port) == 1)
+					{
+						EthClient.println("Hello!");
+						serverIP[0] = remote[0];
+						serverIP[1] = remote[1];
+						serverIP[2] = remote[2];
+						serverIP[3] = remote[3];
+						DataStore.saveServerIP(serverIP); 
+
+						DEBUG_PRINTLN("Connected!:");
+					}
+					else
+					{
+						DEBUG_PRINTLN("Can't connect to remote");
+					}
 				}
 
 				//PubSubClient client(EthClient);

@@ -10,6 +10,7 @@
 #endif
 
 #include <EEPROM.h>
+#include "Ethernet2.h"
 #include "Variables.h"
 
 
@@ -17,7 +18,7 @@
 
 	Bytes	0 - 16:		Serial Number
 	Bytes	20 - 26:	Mac Address
-
+	bytes	30 - 34		last Server IP
 	Byte	99:			Initialised Flag
 	Bytes	100 - 200:	Restart counter, wear leveling.
 */
@@ -30,6 +31,7 @@ class DataStoreClass
 	 SerialNumber SN;
 	 const int snEEPROMaddress = 0; 
 	 const int macEEPROMaddress = 16; 
+	 const int serverIpAddress = 30; 
 	 const int initFlagAddress = 99; 
 
 	 byte macAddress[6];
@@ -117,6 +119,19 @@ class DataStoreClass
 		 }
 
 	 }
+
+	 void saveServerIP(IPAddress ip)
+	 {
+		 EEPROM.put(serverIpAddress, ip); 
+	 }
+
+	 IPAddress getServerIP()
+	 {
+		 IPAddress ip; 
+		 ip = EEPROM.get(serverIpAddress, ip);
+		 return ip; 
+	 }
+
 
 	SerialNumber getSerial()
 	{
