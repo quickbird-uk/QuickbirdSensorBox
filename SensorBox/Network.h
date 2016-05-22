@@ -26,7 +26,7 @@ class NetworkClass
 {
  protected:
 	 // Update these with values suitable for your network.
-	 const uint16_t port = 1337;
+	 const uint16_t port = 1883;
 	 IPAddress serverIP;
 	 static const byte rBufferLength = 100; 
 	 char recieveBuffer[rBufferLength];
@@ -35,6 +35,7 @@ class NetworkClass
 	 EthernetUDP UDPsocket; 
 	 EthernetClient EthClient; 
 	 const uint16_t UDPPort = 44000;
+	 PubSubClient _pubSubClient; 
 	 bool gotAddress = false; 
 
 
@@ -80,6 +81,8 @@ class NetworkClass
 		w5500.setRetransmissionTime(0x03E8);
 		w5500.setRetransmissionCount(3); 
 		UDPsocket.begin(UDPPort); 
+		_pubSubClient.setServer(serverIP, port).setClient(EthClient);
+
 		return true; 
 	}
 	
@@ -89,12 +92,12 @@ class NetworkClass
 	//If not connected, will try to connect. Reports on success
 	boolean _ConnectionWorks()
 	{
-		boolean status = EthClient.connected();
+		boolean status = _pubSubClient.connected();
 
 		if (!status)
 		{
-			EthClient.stop(); 
-			status = EthClient.connect(serverIP, port);
+			_pubSubClient.disconnect(); 
+			status = _pubSubClient.connect("Bob");
 
 			if (status)
 			{
@@ -109,11 +112,18 @@ class NetworkClass
 		return status;
 	}
 
-	boolean SendData(Reading* readings, const byte number)
+	boolean SendData(Reading* readings)
 	{
 		if (_ConnectionWorks())
 		{
-			EthClient.println(readings[1].value); 
+			
+			byte buffer[networkBufferSize];
+			byte* dataPointer = (byte*)readings; 
+			for (int i = networkBufferSize; i > 0; i--)
+			{
+				buffer[i] = *(dataPointer + i); 
+			}
+			_pubSubClient.publish("readings", buffer, networkBufferSize); 
 			//const int buffersize = Reading::size * number; 
 			//byte[buffersize] buffer;
 
@@ -139,6 +149,8 @@ class NetworkClass
 	void Maintain()
 	{
 		Ethernet.maintain();
+		_pubSubClient.loop(); 
+
 		int packetSize = UDPsocket.parsePacket();
 		if (packetSize == 6)
 		{
@@ -158,9 +170,10 @@ class NetworkClass
 					serverIP[3] != remote[3])
 				{
 					DEBUG_PRINTLN("IP is different");
-					EthClient.stop();
+					_pubSubClient.disconnect(); 
+					_pubSubClient.setServer(remote, port); 
 
-					if (EthClient.connect(remote, port) == 1)
+					if (_pubSubClient.connect("bob"))
 					{
 						EthClient.println("Hello!");
 						serverIP[0] = remote[0];
@@ -174,13 +187,12 @@ class NetworkClass
 					else
 					{
 						DEBUG_PRINTLN("Can't connect to remote");
+						_pubSubClient.disconnect(); 
+						_pubSubClient.setServer(serverIP, port);
+						_pubSubClient.connect("Bob"); 
 					}
 				}
 
-				//PubSubClient client(EthClient);
-				//client.setServer(serverIP, 1883); 
-				//client.connect("Bafoon"); 
-				//client.publish("soasdasdasdasd", "asdadasdasdasda");
 			}
 			else {
 

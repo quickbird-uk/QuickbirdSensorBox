@@ -9,9 +9,12 @@
 #include "WProgram.h"
 #endif
 
+const byte numberOfReadings = 8;
 const byte numberOfSamples = 20;
 const uint32_t networkTus = 1000000;
 const uint32_t AnalogueSampleT = networkTus / numberOfSamples;
+
+
 
 struct SerialNumber
 {
@@ -32,6 +35,6 @@ struct Reading
 	static const int size = 9; 
 };
 
-
+const byte networkBufferSize = numberOfReadings * Reading::size;
 
 #endif

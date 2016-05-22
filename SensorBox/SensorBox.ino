@@ -56,7 +56,7 @@ SensorPH sensorPh(A0, A2);
 SensorEC_DFR0300 sensorEC(A1, A3, A2);
 SensorLightAnalog lightSensor(A5); 
 
-const byte numberOfReadings = 8; 
+
 Reading readings[numberOfReadings];
 
 void setup() {
@@ -122,7 +122,7 @@ void loop() {
 		}
 
 		//Send data 
-		if (Network.SendData(readings, numberOfReadings))
+		if (Network.SendData(readings))
 		{
 			//something
 		}
