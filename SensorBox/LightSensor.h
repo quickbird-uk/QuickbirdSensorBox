@@ -9,7 +9,7 @@
 	#include "WProgram.h"
 #endif
 
-#include <Wire.h>
+//#include <Wire.h>
 #include <math.h> 
 #include "Variables.h"
 
@@ -26,25 +26,25 @@ class LightSensorClass
 	 int BH1750_Read(int address) //
 	 {
 		 int i = 0;
-		 
-		 Wire.beginTransmission(address);
-		 i = Wire.requestFrom(address, 2);
-		 if(i == 2)
-		 {
-			 buff[0] = Wire.read();  // receive one byte
-			 buff[1] = Wire.read();  // receive one byte
-		 }
-		 else
-		 {
-			 while (Wire.available())
-			 { //empty the buffer
-				 Wire.read();
-				 i--; 
-			 }
-			 return 0; 
-		 }
+		// 
+		// Wire.beginTransmission(address);
+		// i = Wire.requestFrom(address, 2);
+		// if(i == 2)
+		// {
+		//	 buff[0] = Wire.read();  // receive one byte
+		//	 buff[1] = Wire.read();  // receive one byte
+		// }
+		// else
+		// {
+		//	 while (Wire.available())
+		//	 { //empty the buffer
+		//		 Wire.read();
+		//		 i--; 
+		//	 }
+		//	 return 0; 
+		// }
 
-		 Wire.endTransmission();
+		// Wire.endTransmission();
 
 
 		 //DEBUG_PRINTLN("LightStatusCode");
@@ -56,12 +56,12 @@ class LightSensorClass
 	 bool BH1750_Init(int address)
 	 {
 		 byte sent = 0; 
-		 Wire.beginTransmission(address);
-		 sent += Wire.write(7); //Reset
-		 Wire.endTransmission();
-		 Wire.beginTransmission(address);
-		 sent += Wire.write(0x10);//1lx reolution 120ms
-		 Wire.endTransmission();
+		 //Wire.beginTransmission(address);
+		 //sent += Wire.write(7); //Reset
+		 //Wire.endTransmission();
+		 //Wire.beginTransmission(address);
+		 //sent += Wire.write(0x10);//1lx reolution 120ms
+		 //Wire.endTransmission();
 
 
 

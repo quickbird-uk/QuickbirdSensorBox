@@ -178,6 +178,7 @@ class NetworkClass
 				}
 
 				//PubSubClient client(EthClient);
+				//client.setServer(serverIP, 1883); 
 				//client.connect("Bafoon"); 
 				//client.publish("soasdasdasdasd", "asdadasdasdasda");
 			}
