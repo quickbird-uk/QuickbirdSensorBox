@@ -37,8 +37,26 @@ class NetworkClass
 	 const uint16_t UDPPort = 44000;
 	 PubSubClient _pubSubClient; 
 	 bool gotAddress = false; 
+	 char deviceID[49]; 
 
-
+	 void tohex(unsigned char * in, size_t insz, char * out, size_t outsz)
+	 {
+		 unsigned char * pin = in;
+		 const char * hex = "0123456789ABCDEF";
+		 char * pout = out;
+		 for (; pin < in + insz; pout += 3, pin++) {
+			 pout[0] = hex[(*pin >> 4) & 0xF];
+			 pout[1] = hex[*pin & 0xF];
+			 pout[2] = ':';
+			 if (pout + 3 - out > outsz) {
+				 /* Better to truncate output string than overflow buffer */
+				 /* it would be still better to either return a status */
+				 /* or ensure the target buffer is large enough and it never happen */
+				 break;
+			 }
+		 }
+		 pout[-1] = 0;
+	 }
 
  public:
 
@@ -75,6 +93,15 @@ class NetworkClass
 		}
 		DEBUG_PRINTLN();
 
+		//set device ID
+		SerialNumber sn = DataStore.getSerial(); 
+
+		unsigned char * dataPointer = (unsigned char *)&sn;
+
+		tohex(dataPointer, 16, deviceID, 48);
+
+		deviceID[48] = '\0'; //termination Char
+
 
 		//Absolutely essential when using netowrk and relays together,
 		//this reduces the amount of time arduino waits for conenctin attempt to complete
@@ -97,7 +124,7 @@ class NetworkClass
 		if (!status)
 		{
 			_pubSubClient.disconnect(); 
-			status = _pubSubClient.connect("Bob");
+			status = _pubSubClient.connect(deviceID);
 
 			if (status)
 			{
@@ -124,8 +151,6 @@ class NetworkClass
 				buffer[i] = *(dataPointer + i); 
 			}
 			_pubSubClient.publish("readings", buffer, networkBufferSize); 
-			//const int buffersize = Reading::size * number; 
-			//byte[buffersize] buffer;
 
 		}
 
@@ -173,7 +198,7 @@ class NetworkClass
 					_pubSubClient.disconnect(); 
 					_pubSubClient.setServer(remote, port); 
 
-					if (_pubSubClient.connect("bob"))
+					if (_pubSubClient.connect(deviceID))
 					{
 						EthClient.println("Hello!");
 						serverIP[0] = remote[0];
@@ -189,7 +214,7 @@ class NetworkClass
 						DEBUG_PRINTLN("Can't connect to remote");
 						_pubSubClient.disconnect(); 
 						_pubSubClient.setServer(serverIP, port);
-						_pubSubClient.connect("Bob"); 
+						_pubSubClient.connect(deviceID);
 					}
 				}
 
