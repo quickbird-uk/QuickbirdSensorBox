@@ -37,7 +37,7 @@ class NetworkClass
 	 const uint16_t UDPPort = 44000;
 	 PubSubClient _pubSubClient; 
 	 bool gotAddress = false; 
-	 char deviceID[49]; 
+	 char deviceID[48]; 
 
 	 void tohex(unsigned char * in, size_t insz, char * out, size_t outsz)
 	 {
@@ -55,7 +55,9 @@ class NetworkClass
 				 break;
 			 }
 		 }
-		 pout[-1] = 0;
+		 pout[-1] = 0; //stop character instead of one of seperators
+		 //this needs to put stop char in a different place if you want to get rid of separators 
+
 	 }
 
  public:
@@ -96,12 +98,8 @@ class NetworkClass
 		//set device ID
 		SerialNumber sn = DataStore.getSerial(); 
 
-		unsigned char * dataPointer = (unsigned char *)&sn;
-
+		unsigned char * dataPointer = (unsigned char *)&sn; // unsigned char is same as bytes 
 		tohex(dataPointer, 16, deviceID, 48);
-
-		deviceID[48] = '\0'; //termination Char
-
 
 		//Absolutely essential when using netowrk and relays together,
 		//this reduces the amount of time arduino waits for conenctin attempt to complete
