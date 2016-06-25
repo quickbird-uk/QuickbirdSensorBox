@@ -10,7 +10,7 @@
 #endif
 
 const byte numberOfReadings = 8;
-const byte numberOfSamples = 20;
+const byte numberOfSamples = 5;
 const uint32_t networkTus = 1000000;
 const uint32_t AnalogueSampleT = networkTus / numberOfSamples;
 

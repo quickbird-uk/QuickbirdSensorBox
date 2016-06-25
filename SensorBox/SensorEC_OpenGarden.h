@@ -117,6 +117,8 @@ class SensorEC_DFR0300
 		 _powerPinEC = powerPinEC;
 		 _powerPinPH = powerPinPH;
 		 sensorPin = pin;
+		 pinMode(_powerPinEC, OUTPUT);
+		 pinMode(_powerPinPH, OUTPUT);
 		 pinMode(sensorPin, INPUT);
 	 }
 
@@ -125,11 +127,13 @@ class SensorEC_DFR0300
 		 digitalWrite(_powerPinPH, LOW);
 		 delay(1);
 		 digitalWrite(_powerPinEC, HIGH);
-		 delay(1);
+		 delay(70);
+
 		 samples[currentSample] = analogRead(sensorPin);
 		 currentSample = (currentSample + 1) % numberOfSamples;
 
 		 digitalWrite(_powerPinEC, LOW);
+
 		 digitalWrite(_powerPinPH, HIGH);
 		 
 	 }
