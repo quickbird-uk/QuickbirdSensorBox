@@ -107,7 +107,7 @@ void loop() {
 		readings[2] = waterSensor->GetReading(); 
 		readings[3].duration = 0; 
 		readings[3].SensorTypeID = 19 ;
-		readings[3].value = digitalRead(floatSwitchPin); 
+		readings[3].value = digitalRead(floatSwitchPin) * 100; //Makes this a percentage thing 
 		readings[4] = SensorDS18B20.GetReading(); 
 		readings[5] = sensorPh.GetReading(); 
 		readings[6] = sensorEC.GetReading(readings[4].value); //giving it current temp

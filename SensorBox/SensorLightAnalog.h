@@ -48,7 +48,7 @@ public:
 										  //this method return temperature
 		reading.duration = networkTus;
 		reading.SensorTypeID = 11;
-		reading.value = voltage; 
+		reading.value = voltage / 1000; //make it kilo-lux 
 
 		return reading;
 	}

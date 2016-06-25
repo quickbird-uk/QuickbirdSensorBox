@@ -85,8 +85,8 @@ class LightSensorClass
 
 		 if (2 == BH1750_Read(BH1750address))
 		 {
-			 uint16_t val = ((buff[0] << 8) | buff[1]) / 1.2;
-			 result.value = val;
+			 uint16_t val = ((buff[0] << 8) | buff[1]) / 1.2 ; 
+			 result.value = val / 1000;// Let's make it kilo- lux
 		 }
 		 else
 		 {

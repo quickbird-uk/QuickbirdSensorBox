@@ -150,9 +150,9 @@ class SensorEC_DFR0300
 
 		 reading.duration = networkTus;
 		 reading.SensorTypeID = 13;
-		 reading.value = voltageToConductivity(ecResistance, temp);
+		 reading.value = voltageToConductivity(ecResistance, temp) / 1000;//make it milli, not microSiverets 
 
-		 return reading; 
+		 return reading ; 
 	 }
 
 
