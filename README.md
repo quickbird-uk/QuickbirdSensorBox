@@ -14,3 +14,7 @@ Storing historical data on SD card and syncing to the app later
 
 Has to have a clock 
 
+## Libraries
+
+* PubSubCLient
+
