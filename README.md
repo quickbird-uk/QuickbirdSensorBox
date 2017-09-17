@@ -9,3 +9,8 @@ Write about the hardware needed!!
 
 control should reside on your arduino, and the app should only change settings - the 
 It is also up to you to detect if the 
+
+Storing historical data on SD card and syncing to the app later 
+
+Has to have a clock 
+
