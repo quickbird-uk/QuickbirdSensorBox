@@ -1,7 +1,8 @@
 # QuickbirdSensorBox
 SensorBox that goes with our Quickbird UWP app and and Server
+ONLY FOR HISTORICAL PURPOSES - THIS REPO WILL BE DELETED! 
 
-#Hardware
+# Hardware
 Write about the hardware needed!! 
 
 
